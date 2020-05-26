@@ -123,7 +123,8 @@ struct Notifier: ParsableCommand {
 
         note.deliveryDate = try Date.dateWith(d: days, h: hours, minutes: minutes, format: when)
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/y HH:mm"
+        formatter.dateStyle = .short
+        formatter.locale = Locale.current
         if let deliveryDate = note.deliveryDate {
             let dateString = formatter.string(from: deliveryDate)
             print("Scheduling note for \(dateString).")
