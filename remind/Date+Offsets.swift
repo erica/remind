@@ -50,11 +50,10 @@ extension Date {
             return adjustedDate
         }
         
-        // Push forward one day to the _next_ instance of this time.
-        // Adding .day, 1 was flaky so I went with .hour, 24. Apologies to
-        // Dave DeLong who is certainly frowning at this horror.
-        guard let newDateDay = NSCalendar.autoupdatingCurrent
-            .date(byAdding: .hour, value: 24, to: adjustedDate)
+        // Push forward one day to the _next_ instance of this time in a way
+        // that will not horrify Dave DeLong
+        let components = calendar.dateComponents([.hour, .minute], from: adjustedDate)
+        guard let newDateDay = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .strict, direction: .forward)
             else { throw RuntimeError.timeAdjustError }
         return newDateDay
     }
